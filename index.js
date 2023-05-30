@@ -1,12 +1,14 @@
-require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const app = express();
 
 const { User } = require('./models/user');
 
-const mongoURL = process.env.MONGO_URL;
+require('dotenv').config({ path: './config/.env' });
+const config = require('./config/key');
 const mongoose = require('mongoose');
+
+const mongoURL = config.mongoURI;
 mongoose
   .connect(mongoURL, {
     useNewUrlParser: true,
