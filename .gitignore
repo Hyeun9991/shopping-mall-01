@@ -1,2 +1,12 @@
-memo.md
+/node_modules
+/build
+
 .env
+
+.DS_Store
+
+npm-debug.log*
+
+.vscode
+
+memo.md
