@@ -1,6 +1,6 @@
 const express = require('express');
-const cookieParser = require('cookie-parser');
 const app = express();
+const cookieParser = require('cookie-parser');
 
 const { User } = require('./models/user');
 
@@ -27,10 +27,8 @@ app.use(cookieParser());
 app.post('/api/users/register', async (req, res) => {
   try {
     const user = new User(req.body);
-    await user.save();
-    res
-      .status(201)
-      .json({ success: true, message: 'User registered successfully' });
+    const userData = await user.save();
+    res.status(201).json({ success: true, userData });
   } catch (err) {
     let errorMessage = 'Unable to register user';
     if (err.code === 11000 && err.keyPattern.email === 1) {
