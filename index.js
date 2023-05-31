@@ -86,6 +86,24 @@ app.post('/api/users/login', async (req, res) => {
   }
 });
 
+// 로그아웃
+app.get('/api/users/logout', auth, async (req, res) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: req.user._id },
+      { token: '' }
+    );
+
+    if (!user) {
+      return res.json({ success: false, message: 'Failed to logout' });
+    }
+
+    return res.status(200).send({ success: true });
+  } catch (error) {
+    next(err);
+  }
+});
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log('heurm server is listening to port ' + port);
