@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const { User } = require('./models/user');
 const { auth } = require('./middleware/auth');
 
-require('dotenv').config({ path: './config/.env' });
+require('dotenv').config();
 const config = require('./config/key');
 const mongoose = require('mongoose');
 
@@ -24,6 +24,16 @@ mongoose
 app.use(express.json()); // JSON 데이터를 파싱하기 위한 미들웨어
 app.use(express.urlencoded({ extended: true })); // URL 인코딩된 데이터를 파싱하기 위한 미들웨어
 app.use(cookieParser());
+
+app.get(['/', '/:name'], (req, res) => {
+  greeting = '<h1>hello</h1>';
+  name = req.params['name'];
+  if (name) {
+    res.send(greeting + '</br> and hello to' + name);
+  } else {
+    res.send(greeting);
+  }
+});
 
 // 인증
 app.get('/api/users/auth', auth, (req, res) => {
@@ -106,5 +116,5 @@ app.get('/api/users/logout', auth, async (req, res) => {
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
-  console.log('heurm server is listening to port ' + port);
+  console.log(`Server on ${port}`);
 });
