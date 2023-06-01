@@ -25,14 +25,8 @@ app.use(express.json()); // JSON 데이터를 파싱하기 위한 미들웨어
 app.use(express.urlencoded({ extended: true })); // URL 인코딩된 데이터를 파싱하기 위한 미들웨어
 app.use(cookieParser());
 
-app.get(['/', '/:name'], (req, res) => {
-  greeting = '<h1>hello</h1>';
-  name = req.params['name'];
-  if (name) {
-    res.send(greeting + '</br> and hello to' + name);
-  } else {
-    res.send(greeting);
-  }
+app.get('/', (req, res) => {
+  res.json({ hello: 'I am happy to deploy our application' });
 });
 
 // 인증
