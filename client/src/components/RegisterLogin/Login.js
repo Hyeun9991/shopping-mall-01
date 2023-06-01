@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -7,6 +7,7 @@ import { loginUser } from '../../actions/user_actions';
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -20,7 +21,13 @@ const Login = () => {
       password: data.password,
     };
 
-    dispatch(loginUser(body));
+    dispatch(loginUser(body)).then((response) => {
+      if (response.payload.loginSuccess) {
+        navigate('/');
+      } else {
+        alert('로그인에 실패했습니다.');
+      }
+    });
   };
 
   return (
