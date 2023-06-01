@@ -110,5 +110,5 @@ app.get('/api/users/logout', auth, async (req, res) => {
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
-  console.log(`Server on ${port}`);
+  console.log(`Server Running at ${port}`);
 });
