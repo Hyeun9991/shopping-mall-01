@@ -21,6 +21,7 @@ const Login = () => {
       password: data.password,
     };
 
+    // login
     dispatch(loginUser(body)).then((response) => {
       if (response.payload.loginSuccess) {
         navigate('/');
@@ -40,7 +41,7 @@ const Login = () => {
             <input
               type="email"
               name="email"
-              placeholder="Type your email"
+              placeholder="Email address"
               {...register('email', {
                 required: true,
                 pattern: /^\S+@\S+$/i,
@@ -56,7 +57,7 @@ const Login = () => {
             <input
               type="password"
               name="password"
-              placeholder="Type your password"
+              placeholder="Password"
               {...register('password', { required: true, minLength: 6 })}
             />
             {errors.password && errors.password.type === 'required' && (
@@ -71,7 +72,7 @@ const Login = () => {
         </Form>
         <SignUpWrap>
           <p>
-            Don't have an account? <Link to="/register">Sign Up</Link>
+            Don't have an account? <Link to="/register">Sign up</Link>
           </p>
         </SignUpWrap>
       </LoginFormContainer>
@@ -85,23 +86,24 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background: radial-gradient(circle at right bottom, #6606ad60, #fff 30%);
 `;
 const LoginFormContainer = styled.div`
   background: #f8f8f8;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 380px;
+  width: 480px;
   height: auto;
   padding: 32px;
   border-radius: 0.75rem;
   margin: 1rem;
-  box-shadow: 0 40px 40px rgb(230 230 230);
+  box-shadow: 0 40px 40px rgb(205 205 205);
 `;
 const Title = styled.h1`
   font-size: 24px;
   font-weight: 500;
-  color: #000;
+  color: #333;
   margin-bottom: 3rem;
 `;
 const Form = styled.form`
@@ -129,7 +131,7 @@ const InputWrap = styled.div`
     font-weight: 400;
     color: #000;
     border-radius: 0.75rem;
-    border: 0.075rem solid transparent;
+    border: 0.1rem solid transparent;
     padding: 0.75rem 1rem;
 
     &:focus {
@@ -153,7 +155,7 @@ const SubmitButton = styled.button`
   margin-top: 1rem;
   text-transform: uppercase;
   border-radius: 999px;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 12px;
   padding-bottom: 16px;
   padding-top: 16px;
@@ -181,7 +183,7 @@ const SignUpWrap = styled.div`
   p {
     color: #8b8b8b;
     font-size: 12px;
-    font-weight: 40;
+    font-weight: 400;
     display: flex;
     gap: 0.5rem;
   }
