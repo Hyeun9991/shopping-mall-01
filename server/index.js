@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
 app.get('/api/users/auth', auth, (req, res) => {
   res.status(200).json({
     _id: req._id,
+    isAdmin: req.user.role === 0 ? false : true,
     isAuth: true,
     email: req.user.email,
     name: req.user.name,

@@ -4,10 +4,15 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../actions/user_actions';
+import { fontSizes } from '../../theme/theme';
+import { useTheme } from '../../context/themeProvider';
+import ThemeToggle from '../views/Layout/ThemeToggle';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [ThemeMode, toggleTheme] = useTheme();
 
   const {
     register,
@@ -25,6 +30,7 @@ const Login = () => {
     dispatch(loginUser(body)).then((response) => {
       if (response.payload.loginSuccess) {
         navigate('/');
+        window.localStorage.setItem('userId', response.payload.userId);
       } else {
         alert('로그인에 실패했습니다.');
       }
@@ -33,6 +39,12 @@ const Login = () => {
 
   return (
     <Container>
+      <ThemeToggle toggle={toggleTheme} mode={ThemeMode} />
+      <HeaderContainer>
+        <LogoWrap>
+          <Link to="/">eunhye</Link>
+        </LogoWrap>
+      </HeaderContainer>
       <LoginFormContainer>
         <Title>Sign in</Title>
         <Form onSubmit={handleSubmit(onSubmit)}>
@@ -86,10 +98,33 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at right bottom, #6606ad60, #fff 30%);
+  background: radial-gradient(
+    circle at right bottom,
+    #6606ad60,
+    ${({ theme }) => theme.bg_main1} 30%
+  );
+`;
+const HeaderContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  padding: 0 5%;
+`;
+const LogoWrap = styled.h1`
+  text-transform: uppercase;
+  font-size: ${fontSizes.lg};
+  font-weight: 600;
+  a {
+    text-decoration: none;
+    color: ${({ theme }) => theme.text1};
+  }
 `;
 const LoginFormContainer = styled.div`
-  background: #f8f8f8;
+  background: ${({ theme }) => theme.bg_element2};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -98,12 +133,12 @@ const LoginFormContainer = styled.div`
   padding: 32px;
   border-radius: 0.75rem;
   margin: 1rem;
-  box-shadow: 0 40px 40px rgb(205 205 205);
+  border: 0.05rem solid ${({ theme }) => theme.border4};
 `;
 const Title = styled.h1`
-  font-size: 24px;
+  font-size: ${fontSizes.xxl};
   font-weight: 500;
-  color: #333;
+  color: ${({ theme }) => theme.text1};
   margin-bottom: 3rem;
 `;
 const Form = styled.form`
@@ -123,23 +158,25 @@ const InputWrap = styled.div`
   }
 
   input {
-    background: #ededed;
+    background: ${({ theme }) => theme.bg_element1};
     outline: none;
     border: none;
     transition: 0.3s all ease-in-out;
     font-size: 14px;
     font-weight: 400;
-    color: #000;
+    color: ${({ theme }) => theme.text1};
     border-radius: 0.75rem;
     border: 0.1rem solid transparent;
     padding: 0.75rem 1rem;
+    transition-duration: 0.2s;
+    transition: 0.22s ease-in-out;
 
     &:focus {
       border-color: #6606ad;
     }
 
     &::placeholder {
-      color: #8b8b8b;
+      color: ${({ theme }) => theme.text4};
     }
   }
 `;
@@ -151,7 +188,7 @@ const ErrorText = styled.p`
   font-weight: 400;
 `;
 const SubmitButton = styled.button`
-  background-color: #6606ad;
+  background-color: ${({ theme }) => theme.bg_main3};
   margin-top: 1rem;
   text-transform: uppercase;
   border-radius: 999px;
@@ -159,7 +196,8 @@ const SubmitButton = styled.button`
   font-size: 12px;
   padding-bottom: 16px;
   padding-top: 16px;
-  transition: 0.22s ease-out;
+  transition-duration: 0.2s;
+  transition: 0.22s ease-in-out;
   width: 100%;
   border: none;
   color: #efefef;
@@ -178,7 +216,7 @@ const SubmitButton = styled.button`
   }
 `;
 const SignUpWrap = styled.div`
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 
   p {
     color: #8b8b8b;

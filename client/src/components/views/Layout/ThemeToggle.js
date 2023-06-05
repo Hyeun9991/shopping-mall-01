@@ -1,10 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import { fontSizes } from '../../../theme/theme';
+import { MdSunny, MdDarkMode } from 'react-icons/md';
 
 const ThemeToggle = ({ toggle, mode }) => {
   return (
     <ToggleWrapper onClick={toggle}>
-      {mode === 'dark' ? '🌚' : '🌝'}
+      {mode === 'dark' ? (
+        <MdDarkMode className="icon" />
+      ) : (
+        <MdSunny className="icon" />
+      )}
     </ToggleWrapper>
   );
 };
@@ -15,20 +21,30 @@ const ToggleWrapper = styled.button`
   bottom: 4%;
   right: 3%;
 
-  background-color: ${(props) => props.theme.bgColor};
-  border: ${(props) => props.theme.borderColor};
-  font-size: 20px;
+  background-color: ${({ theme }) => theme.bg_main3};
+  font-size: ${fontSizes.small};
+  color: ${({ theme }) => theme.text3};
 
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 96px;
+  width: 48px;
   height: 48px;
-  border-radius: 30px;
-  box-shadow: ${(props) =>
-    props.mode === 'dark'
-      ? '0px 5px 10px rgba(40, 40, 40, 1), 0px 2px 4px rgba(40, 40, 40, 1)'
-      : '0 5px 10px rgba(100, 100, 100, 0.15), 0 2px 4px rgba(100, 100, 100, 0.15)'};
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.06), 0 2px 32px 0 rgba(0, 0, 0, 0.16);
+  transition-duration: 0.2s;
+  transition: 0.22s ease-in-out;
+  cursor: pointer;
+
+  .icon {
+    color: #fff;
+    font-size: ${fontSizes.lg};
+  }
+
+  &:hover {
+    scale: 1.1;
+  }
 `;
 
 export default ThemeToggle;
