@@ -20,7 +20,7 @@ export default function Auth(SpecificComponent, option, adminRoute = null) {
 
     useEffect(() => {
       dispatch(auth()).then((response) => {
-        // console.log('hoc auth', response);
+        console.log('hoc auth', response);
 
         // 로그인 하지 않은 상태, isAuth = false
         if (!response.payload.isAuth) {

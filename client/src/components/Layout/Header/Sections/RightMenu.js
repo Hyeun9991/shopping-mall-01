@@ -12,6 +12,7 @@ const RightMenu = () => {
   const logoutHandler = () => {
     axios.get('/api/users/logout').then((response) => {
       if (response.data.success) {
+        window.localStorage.removeItem('userId');
         navigate('/login');
       } else {
         alert('로그아웃 하는데 실패 했습니다.');
@@ -19,43 +20,30 @@ const RightMenu = () => {
     });
   };
 
-  return (
-    <RightMenuContainer>
-      <MenuItem>
-        <NavLink to="/login">Login</NavLink>
-      </MenuItem>
-      <MenuItem>
-        <NavLink to="/register" className="signup-btn">
-          Sign up
-        </NavLink>
-      </MenuItem>
-    </RightMenuContainer>
-  );
-
-  // if (user.userData && !user.userData.isAuth) {
-  //   return (
-  //     <RightMenuContainer>
-  //       <MenuItem>
-  //         <NavLink to="/login">Login</NavLink>
-  //       </MenuItem>
-  //       <MenuItem>
-  //         <NavLink to="/register" className="signup-btn">
-  //           Sign up
-  //         </NavLink>
-  //       </MenuItem>
-  //     </RightMenuContainer>
-  //   );
-  // } else {
-  //   return (
-  //     <RightMenuContainer>
-  //       <MenuItem>
-  //         <NavLink to="#" onClick={logoutHandler}>
-  //           Logout
-  //         </NavLink>
-  //       </MenuItem>
-  //     </RightMenuContainer>
-  //   );
-  // }
+  if (user.userData && !user.userData.isAuth) {
+    return (
+      <RightMenuContainer>
+        <MenuItem>
+          <NavLink to="/login">Login</NavLink>
+        </MenuItem>
+        <MenuItem>
+          <NavLink to="/register" className="signup-btn">
+            Sign up
+          </NavLink>
+        </MenuItem>
+      </RightMenuContainer>
+    );
+  } else {
+    return (
+      <RightMenuContainer>
+        <MenuItem>
+          <NavLink to="#" onClick={logoutHandler}>
+            Logout
+          </NavLink>
+        </MenuItem>
+      </RightMenuContainer>
+    );
+  }
 };
 
 const RightMenuContainer = styled.ul`

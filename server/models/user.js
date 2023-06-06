@@ -29,7 +29,7 @@ const userSchema = mongoose.Schema({
     type: String,
   },
   tokenExp: {
-    type: Number,
+    type: Date,
   },
 });
 
@@ -58,6 +58,7 @@ userSchema.pre('save', function (next) {
 userSchema.methods.comparePassword = async function (plainPassword) {
   try {
     const user = this; // this = userSchema
+
     return await bcrypt.compare(plainPassword, user.password);
   } catch (err) {
     throw new Error(err);
@@ -71,6 +72,7 @@ userSchema.methods.generateToken = async function () {
   const token = jwt.sign(user._id.toHexString(), 'secretToken');
 
   user.token = token;
+  user.tokenExp = new Date(Date.now() + 12 * 60 * 60 * 1000); // 토큰 만료시간: 12시간 후 타임스탬프 설정
   await user.save();
 
   return token;
@@ -85,11 +87,25 @@ userSchema.statics.findByToken = async function (token) {
 
   try {
     const decoded = jwt.verify(token, 'secretToken');
-    const foundUser = await user.findOne({ _id: decoded, token: token });
+    const foundUser = await user.findOne({
+      _id: decoded,
+      token: token,
+      tokenExp: { $gte: new Date() }, // 토큰 유효성 확인 추가
+    });
+
     return foundUser;
   } catch (err) {
     throw err;
   }
+};
+
+// 토큰 삭제 메소드
+userSchema.methods.deleteToken = async function () {
+  const user = this;
+
+  user.token = '';
+  user.tokenExp = 0;
+  await user.save();
 };
 
 const User = mongoose.model('User', userSchema);

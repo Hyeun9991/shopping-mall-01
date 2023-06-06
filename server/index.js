@@ -97,7 +97,7 @@ app.get('/api/users/logout', auth, async (req, res) => {
   try {
     const user = await User.findOneAndUpdate(
       { _id: req.user._id },
-      { token: '' }
+      { token: '', tokenExp: 0 } // 토큰 및 토큰 만료 시간 초기화
     );
 
     if (!user) {
