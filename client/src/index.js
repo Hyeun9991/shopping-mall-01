@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { legacy_createStore as createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise';
 import ReduxThunk from 'redux-thunk';
-import Reducer from './reducers';
+import Reducer from './_reducers';
 
 const createStoreWithMiddleware = applyMiddleware(
   promiseMiddleware,

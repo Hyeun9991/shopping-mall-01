@@ -2,15 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Layout from '../Layout/Layout';
+import Layout from '../../Layout/Layout';
 
-const Home = () => {
+const Landing = () => {
   const navigate = useNavigate();
 
   const onClickHandler = () => {
     axios.get('/api/users/logout').then((response) => {
       if (response.data.success) {
-        navigate('/');
+        navigate('/login');
       } else {
         alert('로그아웃에 실패 했습니다.');
       }
@@ -20,7 +20,7 @@ const Home = () => {
   return (
     <Layout>
       <Container>
-        <h1>Home</h1>
+        <h1>Landing</h1>
         <button onClick={onClickHandler}>Logout</button>
       </Container>
     </Layout>
@@ -35,4 +35,4 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-export default Home;
+export default Landing;

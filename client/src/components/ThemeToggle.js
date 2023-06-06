@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontSizes } from '../../../theme/theme';
 import { MdSunny, MdDarkMode } from 'react-icons/md';
+import { fontSizes } from '../theme/theme';
 
 const ThemeToggle = ({ toggle, mode }) => {
   return (

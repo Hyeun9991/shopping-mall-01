@@ -1,14 +1,14 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { registerUser } from '../../actions/user_actions';
-import ThemeToggle from '../views/Layout/ThemeToggle';
-import { useTheme } from '../../context/themeProvider';
-import { fontSizes } from '../../theme/theme';
+import { loginUser } from '../../../_actions/user_actions';
+import { fontSizes } from '../../../theme/theme';
+import { useTheme } from '../../../context/themeProvider';
+import ThemeToggle from '../../ThemeToggle';
 
-const Register = () => {
+const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -16,34 +16,23 @@ const Register = () => {
 
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const password = useRef();
-  password.current = watch('password'); // watch: 어떤것이 입력되고 있는지 알아야 유효성을 체크할 수 있음.
-
   const onSubmit = (data) => {
-    console.log(data);
-
-    if (data.password !== data.password_confirm) {
-      return alert('비밀번호가 다릅니다.');
-    }
-
     let body = {
-      name: data.name,
       email: data.email,
       password: data.password,
     };
 
-    // register
-    dispatch(registerUser(body)).then((response) => {
-      if (response.payload.success) {
-        console.log(response.payload);
-        navigate('/login');
+    // login
+    dispatch(loginUser(body)).then((response) => {
+      if (response.payload.loginSuccess) {
+        navigate('/');
+        window.localStorage.setItem('userId', response.payload.userId);
       } else {
-        alert('회원가입에 실패했습니다.');
+        alert('로그인에 실패했습니다.');
       }
     });
   };
@@ -56,25 +45,9 @@ const Register = () => {
           <Link to="/">eunhye</Link>
         </LogoWrap>
       </HeaderContainer>
-      <RegisterFormContainer>
-        <Title>Sign up</Title>
+      <LoginFormContainer>
+        <Title>Sign in</Title>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <InputWrap>
-            <label htmlFor="">Name</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              {...register('name', { required: true, maxLength: 10 })}
-            />
-            {errors.name && errors.name.type === 'required' && (
-              <ErrorText>This field is required</ErrorText>
-            )}
-            {errors.name && errors.name.type === 'maxLength' && (
-              <ErrorText>Your input exceed maximum length</ErrorText>
-            )}
-          </InputWrap>
-
           <InputWrap>
             <label htmlFor="">Email</label>
             <input
@@ -107,37 +80,14 @@ const Register = () => {
             )}
           </InputWrap>
 
-          <InputWrap>
-            <label htmlFor="">Password Confirm</label>
-            <input
-              type="password"
-              name="password_confirm"
-              placeholder="Confirm password"
-              {...register('password_confirm', {
-                required: true,
-                validate: (value) => {
-                  return value === password.current;
-                },
-              })}
-            />
-            {errors.password_confirm &&
-              errors.password_confirm.type === 'required' && (
-                <ErrorText>This field is required</ErrorText>
-              )}
-            {errors.password_confirm &&
-              errors.password_confirm.type === 'validate' && (
-                <ErrorText>The passwords to not match</ErrorText>
-              )}
-          </InputWrap>
-
-          <SubmitButton>Sign up with email</SubmitButton>
+          <SubmitButton>Sign in</SubmitButton>
         </Form>
         <SignUpWrap>
           <p>
-            already have an account? <Link to="/login">Sign ip</Link>
+            Don't have an account? <Link to="/register">Sign up</Link>
           </p>
         </SignUpWrap>
-      </RegisterFormContainer>
+      </LoginFormContainer>
     </Container>
   );
 };
@@ -148,7 +98,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   background: radial-gradient(
     circle at right bottom,
     #6606ad60,
@@ -174,7 +123,7 @@ const LogoWrap = styled.h1`
     color: ${({ theme }) => theme.text1};
   }
 `;
-const RegisterFormContainer = styled.div`
+const LoginFormContainer = styled.div`
   background: ${({ theme }) => theme.bg_element2};
   display: flex;
   flex-direction: column;
@@ -287,4 +236,4 @@ const SignUpWrap = styled.div`
   }
 `;
 
-export default Register;
+export default Login;

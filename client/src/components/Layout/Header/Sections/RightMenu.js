@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { fontSizes } from '../../../../theme/theme';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { fontSizes } from '../../../../theme/theme';
 
 const RightMenu = () => {
   const user = useSelector((state) => state.user);
